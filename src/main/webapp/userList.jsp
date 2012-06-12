@@ -16,108 +16,79 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script>
     $(document).ready(function() {
-        
+
         var userOffset = $.cookie(offsetCookieUser);
-        
+
         $("button.idm-edit-open").button({ icons: { primary: "ui-icon-pencil" }});
+
         $("button.idm-user-roles").button({ icons: { primary: "ui-icon-tag" }}).click(function() {
             var user = $(this).val();
             var url = urlRole+"?u="+user;
             loadByAjax(paneRoleAjax, url);
             $(paneTabs).tabs('select', 2);
         });
-        
+
         $("button.idm-role-user-add").button({ icons: { primary: "ui-icon-plus" }}).click(function() {
             var name = $(this).val();
             $("#roleUserId option").remove();
             $("#roleUserId").append($("<option></option>").attr("value",name).text(name));
             $(paneTabs).tabs('select', 2);
         });
-        
+
         $("button.idm-user-assign").button({ icons: { primary: "ui-icon-plus" }}).click(function(){
             var uid = $(this).val();
             handlerGroupSel = function(name, type) {
                 var assUrl = urlUser+"?a=8&uId="+uid+"&gId="+name+"&gT="+type;
-                    
-                $.get(assUrl, function(data) {
-                    if (data == "1"){
-                        showMessage("note-success", "Group association succesfull!<br/>"+data);
-                        loadByAjax(paneUserAjax, urlUser+"?uO="+userOffset);
-                    } else {
-                        showMessage("note-error", "Unable to associate user<br/>"+data);    
-                    }
-                    $("#dialog-group-select").dialog("close");
-                });
+                ajaxActionWithRefresh(assUrl, "Group association succesfull!", "Unable to associate user.", urlUser, paneUserAjax, handleUserPaginationClick);
+                $("#dialog-group-select").dialog("close");
             };
             $("#dialog-group-select").dialog("open");
         });
-        
+
         $("button.idm-atts-open").button({ icons: { primary: "ui-icon-folder-collapsed" }});
         $("button.idm-atts-add").button({ icons: { primary: "ui-icon-plus" }});
         $("button.idm-delete").button({ icons: { primary: "ui-icon-closethick" }});
         $("button.idm-but-upload").button({ icons: { primary: "ui-icon-folder-open"}});
         $("button.idm-but-change").button({ icons: { primary: "ui-icon-key" }});
-        
+
         $("button.idm-user-group").button({ icons: { secondary: "ui-icon-closethick" }}).click(function() {
             var uid = $(this).siblings('input[name="uid"]').val();
             var gname = $(this).val();
             var gtype = $(this).siblings('input[name="gtype"]').val();
-            
+
             $("#gUserId").html(uid);
             $("#gGroupId").html(gname);
             $("#gGroupType").html(gtype);
-            
+
             $( "#dialog-user-deassociate" ).dialog("open");
         });
-        
+
         $("button.idm-user-edit-save").button({ icons: { primary: "ui-icon-pencil"}}).click(function() {
             var uname = $(this).siblings('input[name="uname"]').val();
             var fname = $(this).siblings('input[name="fname"]').val();
             var lname = $(this).siblings('input[name="lname"]').val();
             var email = $(this).siblings('input[name="email"]').val();
-            
+
             editUrl = urlUser+"?a=3&uId="+uname+"&uFn="+fname+"&uLn="+lname+"&uEm="+email;
-                        
-            $.get(editUrl, function(data) {
-                if (data == "1"){
-                    showMessage("note-success", "Attribute edit succesfull.");                    
-                } else {
-                    showMessage("note-error", "Unable to edit attribute.<br/>Error message: "+data);    
-                }
-            });
+
+            ajaxAction(editUrl, "Attribute edit succesfull.", "Unable to edit attribute." );
         });
-        
+
         $("button.idm-user-edit-passwd").button({ icons: { primary: "ui-icon-pencil"}}).click(function() {
             var uname = $(this).siblings('input[name="uname"]').val();
             var pass1 = $(this).siblings('input[name="newPass"]').val();
             var pass2 = $(this).siblings('input[name="newPass2"]').val();
-                        
+
             editUrl = urlUser+"?a=7&uId="+uname+"&uP1="+pass1+"&uP2="+pass2;
-                        
-            $.get(editUrl, function(data) {
-                if (data == "1"){
-                    showMessage("note-success", "Password change succesfull.");                    
-                } else {
-                    showMessage("note-error", "Unable to change password.<br/>Error message: "+data);    
-                }
-            });
+
+            ajaxAction(editUrl, "Password change succesfull.", "Unable to change password." );
         });
-        
-        $('ul.idm-grp-ass').tagit({
-            actionOnNewOnly: true,
-            onTagAdded: function(event, tag) {
-                showMessage("note-warning","Unable to add group with this feature.<br/>Please use the assign button");
-            },
-            onTagRemoved: function(event, tag) {
-                showMessage("note-success","Michal Vanco is the best!</br>"+tag.children("input").val());
-            }
-        });
-        
-        $("button.idm-delete").click(function() {            
+
+        $("button.idm-delete").click(function() {
             $("#userId").html($(this).attr("value"));
             $( "#dialog-user-delete" ).dialog("open");
         });
-        
+
         $( "#dialog-user-delete" ).dialog({
             autoOpen: false,
             resizable: false,
@@ -125,23 +96,17 @@
             modal: true,
             dialogClass: "dialogWithDropShadow",
             buttons: {
-                "Delete": function() {                    
-                    $.get(urlUser+"?a=2&uId="+$("#userId").html(), function(data) {
-                        if (data == "1"){
-                            showMessage("note-success", "User delete succesfull!<br/>"+data);
-                            loadByAjax(paneUserAjax, urlUser+"?uO="+userOffset);
-                        } else {
-                            showMessage("note-error", "Unable to delete user<br/>"+data);    
-                        }
-                    });
+                "Delete": function() {
+                    var actionUrl = urlUser+"?a=2&uId="+$("#userId").html();
+                    ajaxActionWithRefresh(actionUrl, "User delete succesfull!", "Unable to delete user", urlUser, paneUserAjax, handleUserPaginationClick);
                     $( this ).dialog( "close" );
                 },
                 Cancel: function() {
                     $( this ).dialog( "close" );
                 }
             }
-        });        
-       
+        });
+
         $( "#dialog-user-deassociate" ).dialog({
             autoOpen: false,
             resizable: false,
@@ -149,37 +114,26 @@
             modal: true,
             dialogClass: "dialogWithDropShadow",
             buttons: {
-                "Delete": function() {   
+                "Delete": function() {
                     var uid = $("#gUserId").html();
                     var gname = $("#gGroupId").html();
                     var gtype = $("#gGroupType").html();
-                    
                     var deAssUrl = urlUser+"?a=9&uId="+uid+"&gId="+gname+"&gT="+gtype;
-                    
-                    $.get(deAssUrl, function(data) {
-                        if (data == "1"){
-                            showMessage("note-success", "Group deassociation succesfull!<br/>"+data);
-                            loadByAjax(paneUserAjax, urlUser+"?uO="+userOffset);
-                        } else {
-                            showMessage("note-error", "Unable to deassociate user<br/>"+data);    
-                        }
-                    });
-                    
+                    ajaxActionWithRefresh(deAssUrl, "Group deassociation succesfull!", "Unable to deassociate user", urlUser, paneUserAjax, handleUserPaginationClick);
                     $( this ).dialog( "close" );
-                    showMessage("note-success");
                 },
                 Cancel: function() {
                     $( this ).dialog( "close" );
                 }
             }
-        });        
-
-        $("button.idm-edit-open").click(function() {              
-            $("#edit"+$(this).attr("value")).dialog("open");         
         });
-        
-        
-        
+
+        $("button.idm-edit-open").click(function() {
+            $("#edit"+$(this).attr("value")).dialog("open");
+        });
+
+
+
     });
 </script>
 <div id="dialog-user-delete" title="Delete user">
@@ -192,74 +146,62 @@
 
 <script>
     $(document).ready(function() {
-        
-        var attOffset = $.cookie(offsetCookieAtt);       
-        
-        $("#idm-att-add").button({ icons: { primary: "ui-icon-plus" }}).click(function() {
-            var aname = $("#idm-att-add-name").val();
-            var avalue = $("#idm-att-add-value").val();
-            var userId = $("#idm-user-att").html();
-            
-            args = "u="+userId+"&aN="+aname+"&aV="+avalue;
-            $.get(urlAtt+"?a=1&"+args, function(data) {
-                if (data == "1"){
-                    showMessage("note-success", "Attribute add succesfull.");
-                    loadByAjax(paneAttAjax, urlAtt+"?u="+userId+"&uO="+attOffset);
-                } else {
-                    showMessage("note-error", "Unable to add attribute<br/>Error message: "+data);    
-                }
-            });
-        });
-        
-        $("button.idm-atts-open").click(function() {              
+
+        var attOffset = $.cookie(offsetCookieAtt);
+
+        $("button.idm-atts-open").click(function() {
             $( "#dialog-user-atts" ).dialog("open");
             var userId = $(this).val();
             $("#idm-user-att").html(userId);
-            
+
             function handleAttPaginationClick(new_page_id, pagination_container) {
-                var url = urlAtt+"?u="+userId+"&uO="+new_page_id;            
-                attOffset = new_page_id;
-                $.cookie(offsetCookieAtt, attOffset);
-                loadByAjax(paneAttAjax, url);
-                return false;
-            }  
-        
-            createPaginator(urlAtt+"?u="+userId, paneAttAjax, handleAttPaginationClick); 
+                return abstractPaginationHandler(new_page_id, pagination_container, urlAtt+"?u="+userId, offsetCookieAtt, paneAttAjax);                
+            }
+            createPaginator(urlAtt+"?u="+userId, paneAttAjax, handleAttPaginationClick);
+            
+            $("#idm-att-add").button({ icons: { primary: "ui-icon-plus" }}).click(function() {
+                var aname = $("#idm-att-add-name").val();
+                var avalue = $("#idm-att-add-value").val();
+                var userId = $("#idm-user-att").html();
+                args = "u="+userId+"&aN="+aname+"&aV="+avalue;
+                var attAddUrl = urlAtt+"?a=1&"+args;
+                ajaxActionWithRefresh(attAddUrl, "Attribute add succesfull.", "Unable to add attribute.", urlUser, paneAttAjax, handleAttPaginationClick);
+            });
         });
-        
+
         $("button.idm-att-roles").button({ icons: { primary: "ui-icon-tag" }}).click(function() {
             var user = $(this).val();
             var url = urlAtt+"?u="+user;
             loadByAjax(paneAttAjax, url);
             $(paneTabs).tabs('select', 2);
         });
-        
-       
+
+
         $( "#dialog-user-atts" ).dialog({
             autoOpen: false,
-            modal: true,    
+            modal: true,
             width: 900,
             dialogClass: "dialogWithDropShadow",
             title: "Attribute editor"
         });
-        
-               
+
+
     });
-    
+
 </script>
-<div id="dialog-user-atts">                
+<div id="dialog-user-atts">
     <form class="idm-inline-form ui-widget ui-widget-content ui-corner-all ui-idm-header">
         <label for="idm-att-add-name">Attribute name:
-            <span class="small msg">Add attribute name:</span>        
+            <span class="small msg">Add attribute name:</span>
         </label>
 
         <input type="text" name="AttName" value="*" id="idm-att-add-name" class="ui-widget ui-state-default ui-corner-all idm" />
 
         <label for="idm-att-add-value">Attribute value:
-            <span class="small msg">Add attribute value:</span>        
+            <span class="small msg">Add attribute value:</span>
         </label>
 
-        <input type="text" name="AttType" value="*" id="idm-att-add-value" class="ui-widget ui-state-default ui-corner-all idm" />                
+        <input type="text" name="AttType" value="*" id="idm-att-add-value" class="ui-widget ui-state-default ui-corner-all idm" />
 
         <button id="idm-att-add" type="button">Add attribute</button>
     </form>
@@ -268,15 +210,15 @@
 
     <div id="MyAttContentArea">
         <div class='p1 pagi'></div>
-        <div class='conajax'><img src="${pageContext.request.contextPath}/img/ajax-loader.gif" class="idm-ajax-load" /></div>    
+        <div class='conajax'><img src="${pageContext.request.contextPath}/img/ajax-loader.gif" class="idm-ajax-load" /></div>
         <div class='con'></div>
         <div class='p2 pagi'></div>
-    </div>   
+    </div>
 
 </div>
 
-<ul class="user idm-list">                        
-    <c:forEach var="user" items="${userPagiList}">                            
+<ul class="user idm-list">
+    <c:forEach var="user" items="${userPagiList}">
         <li class="user">
 
             <img src='${pageContext.request.contextPath}/img/photo.jpg' width="90" class='idm-user-photo'/>
@@ -298,17 +240,17 @@
                 <ul class="idm-grp-ass">
                 <c:forEach var="userGroup" items="${user.associatedGroups}">
                     <li>${userGroup.name}<input type="hidden" value="${userGroup.groupType}"/></li>
-                </c:forEach>                  
+                </c:forEach>
             </ul>
                 -->
                 <ul class="ui-widget ui-widget-content ui-corner-all idm-ul-inline">
                     <c:forEach var="userGroup" items="${user.associatedGroups}">
                         <li>
                             <input type="hidden" name="uid" value="${user.userId}">
-                            <input type="hidden" name="gtype" value="${userGroup.groupType}">                        
+                            <input type="hidden" name="gtype" value="${userGroup.groupType}">
                             <button class="idm-user-group" value="${userGroup.name}">${userGroup.name}</button>
                         </li>
-                    </c:forEach>                  
+                    </c:forEach>
                 </ul>
 
                 <button class="idm-user-assign" value="${user.userId}">Assign...</button>
@@ -324,10 +266,10 @@
                         dialogClass: "dialogWithDropShadow",
                         title: "${user.userId} edit"
                     });
-                    
+
                     $("#edit${user.hash} button").button();
-                    
-                    
+
+
                 });
             </script>
 
@@ -344,12 +286,12 @@
                         </label><input type="text" name="lname" value="${user.lname}" class="ui-widget ui-state-default ui-corner-all idm"/>
                         <label>E-mail:
                             <span class="small">Add user e-mail</span>
-                        </label><input type="text" name="email" value="${user.email}" class="ui-widget ui-state-default ui-corner-all idm"/>                    
+                        </label><input type="text" name="email" value="${user.email}" class="ui-widget ui-state-default ui-corner-all idm"/>
                         <button class="idm-user-edit-save" type="button">Save</button>
                     </fieldset>
                 </form>
 
-                <form class="idm-basic-form">                    
+                <form class="idm-basic-form">
                     <fieldset>
                         <input type="hidden" name="uname" value="${user.userId}"/>
                         <legend>Password change</legend>
@@ -358,7 +300,7 @@
                         </label><input type="password" name="newPass" class="ui-widget ui-state-default ui-corner-all idm"/>
                         <label>Password confirmation:
                             <span class="small">Confirm new password</span>
-                        </label><input type="password" name="newPass2" class="ui-widget ui-state-default ui-corner-all idm" />                    
+                        </label><input type="password" name="newPass2" class="ui-widget ui-state-default ui-corner-all idm" />
                         <button class="idm-user-edit-passwd" type="button">Change password</button>
                     </fieldset>
                 </form>

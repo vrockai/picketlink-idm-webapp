@@ -21,9 +21,12 @@
  */
 package org.picketlink.idm.servlet.processor;
 
+import java.util.Collection;
 import junit.framework.TestCase;
-
 import org.apache.log4j.Logger;
+import org.picketlink.idm.common.exception.IdentityConfigurationException;
+import org.picketlink.idm.common.exception.IdentityException;
+import org.picketlink.idm.servlet.bean.GroupBean;
 
 /**
  *
@@ -32,9 +35,29 @@ import org.apache.log4j.Logger;
 public class IdmProcessorTest extends TestCase {
 
     @SuppressWarnings("unused")
-	private static final Logger log = Logger.getLogger(IdmProcessorTest.class.getName());
-       
-    public void testMock(){
-        
-    }    
+    private static final Logger log = Logger.getLogger(IdmProcessorTest.class.getName());
+
+    public void testAssociateGroup() throws IdentityConfigurationException, IdentityException {
+        IdmProcessor idmProc = new IdmProcessor();
+
+        String gpName = "GroupParentName";
+        String gcName = "GroupChildName";
+        String gType = "root_type";
+
+        idmProc.createGroup(gpName);
+        idmProc.createGroup(gcName);
+
+        idmProc.associateGroup(gpName, gType, gcName, gType);
+        Collection<GroupBean> gbCol = idmProc.getGroupsByRange(0, 10, "*");
+
+        for (GroupBean gb : gbCol) {
+            if (gb.getName().equals(gcName)) {
+                assertEquals(gb.getChildrenCount(), 0);
+            }
+            if (gb.getName().equals(gpName)) {
+                assertEquals(gb.getChildrenCount(), 1);
+                assertEquals(gb.getChildren().iterator().next().getName(), gcName);
+            }
+        }
+    }
 }

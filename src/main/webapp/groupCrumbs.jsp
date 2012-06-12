@@ -24,7 +24,7 @@
             
             var url = urlGroup+"?p="+name+"&t="+type;         
             $.get(urlGroup+"?a=6&p="+name+"&t="+type, function(data) {
-                $("#groupCrumbs").html(data);
+                $(paneGroupBreadcrums).html(data);
             });
             
             $.get("/jboss-idm-servlet/group?a=5&p="+name+"&t="+type, function(data) {
@@ -43,7 +43,7 @@
         $("a.idm-root-group").click(function(){  
             
             $.get(urlGroup+"?a=6", function(data) {
-                $("#groupCrumbs").html(data);
+                $(paneGroupBreadcrums).html(data);
             });
             
             loadByAjax(paneGroupAjax, urlGroup);

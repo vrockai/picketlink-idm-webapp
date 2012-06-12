@@ -17,11 +17,7 @@
 
 <script>
     function handleRoletypePaginationClick(new_page_id, pagination_container) {
-        var url = urlRoletype+"?uO="+new_page_id;
-        rtOffset = new_page_id;
-        $.cookie(offsetCookieRt, rtOffset);
-        loadByAjax(paneRoletypeAjax, url);            
-        return false;
+        return abstractPaginationHandler(new_page_id, pagination_container, urlRoletype, offsetCookieRt, paneRoletypeAjax);
     }
         
     $(function() {

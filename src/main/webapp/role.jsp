@@ -35,12 +35,7 @@
         $("button.idm-delete").button({ icons: { primary: "ui-icon-closethick" }});
         
         function handleRolePaginationClick(new_page_id, pagination_container) {
-            var url = urlRole+"?uO="+new_page_id;
-            var ajaxPane = paneRoleAjax;
-            roleOffset = new_page_id;
-            $.cookie(offsetCookieRole, roleOffset);
-            loadByAjax(ajaxPane, url);            
-            return false;
+            return abstractPaginationHandler(new_page_id, pagination_container, urlRole, offsetCookieRole, paneRoleAjax);
         }
         
         createPaginator(urlRole, paneRoleAjax, handleRolePaginationClick);

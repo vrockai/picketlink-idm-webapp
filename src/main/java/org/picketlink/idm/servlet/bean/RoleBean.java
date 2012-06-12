@@ -2,7 +2,7 @@
  * JBoss, Home of Professional Open Source.
  * Copyright 2012, Red Hat Middleware LLC, and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
- * distribution for a full listing of individual contributors. 
+ * distribution for a full listing of individual contributors.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -19,23 +19,21 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-
 package org.picketlink.idm.servlet.bean;
 
 import java.io.Serializable;
-
 
 /**
  *
  * @author vrockai
  */
-public class RoleBean  implements Serializable{
+public class RoleBean implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 185067231206800646L;
-	private String userId;
+     *
+     */
+    private static final long serialVersionUID = 185067231206800646L;
+    private String userId;
     private String groupType;
 
     public String getGroupType() {
@@ -71,17 +69,16 @@ public class RoleBean  implements Serializable{
     }
     private String groupId;
     private String roletype;
-       
-    public RoleBean(String userId, String groupId, String roletype, String groupType){
+
+    public RoleBean(String userId, String groupId, String roletype, String groupType) {
         this.userId = userId;
         this.groupId = groupId;
         this.roletype = roletype;
         this.groupType = groupType;
     }
-    
+
     @Override
-    public String toString(){
-        return "("+userId+" -> "+roletype+" -> "+groupId+")";
+    public String toString() {
+        return "(" + userId + " -> " + roletype + " -> " + groupId + ")";
     }
-    
 }

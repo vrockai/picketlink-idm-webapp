@@ -46,22 +46,4 @@ public class IdmProcessorFactory {
     public static IdmProcessor getIdmProcessor() {
         return IdmProcessorHolder.idmProc;
     }
-
-    /*
-    public synchronized static IdmProcessor getIdmProcessor() {
-
-        if (idmProc == null) {
-            try {
-                idmProc = new IdmProcessor();
-                idmProc.initializeDB();
-            } catch (IdentityConfigurationException ex) {
-                Logger.getLogger(IdmServlet.class.getName()).error(ex);
-            } catch (IdentityException ex) {
-                Logger.getLogger(IdmServlet.class.getName()).error(ex);
-            }
-        }
-
-        return idmProc;
-    }    
-    */
 }

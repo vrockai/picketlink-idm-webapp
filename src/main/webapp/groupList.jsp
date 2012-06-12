@@ -8,47 +8,25 @@
         
         $("button.idm-group-delete").button({ icons: { primary: "ui-icon-closethick" }});
         
-        $("button.idm-assign").button({ icons: { primary: "ui-icon-plus" }}).click(function(){
-            
+        $("button.idm-assign").button({ icons: { primary: "ui-icon-plus" }}).click(function(){            
             var pId = $(this).siblings('input[name="gId"]').val();
             var pType = $(this).siblings('input[name="gType"]').val();
             
             handlerGroupSel = function(name, type) {
-                
                 var assUrl = urlGroup+"?a=8&pId="+name+"&pT="+type+"&gId="+pId+"&gT="+pType;
-                    
-                $.get(assUrl, function(data) {
-                    if (data == "1"){
-                        showMessage("note-success", "Group association succesfull!");
-                        createPaginator(urlGroup, paneGroupAjax, handleGroupPaginationClick);
-                        //loadByAjax(paneGroupAjax, urlGroup+"?uO="+groupOffset+"&gId="+name+"&t="+type);
-                    } else {
-                        showMessage("note-error", "Unable to associate group<br/>"+data);    
-                    }
-                    $("#dialog-group-select").dialog("close");
-                });
-                
+                ajaxActionWithRefresh(assUrl, "Group association succesfull!", "Unable to associate group.", urlGroup, paneGroupAjax, handleGroupPaginationClick);
+                $("#dialog-group-select").dialog("close");
             };
             $("#dialog-group-select").dialog("open");
         });
-        
+                
         $("button.idm-grp-deassign").button({ icons: { primary: "ui-icon-minus" }}).click(function(){
-        
             var pName= $(this).siblings('input[name="pName"]').val();
             var pType= $(this).siblings('input[name="pType"]').val();
             var gName= $(this).siblings('input[name="gName"]').val();
-            var gType= $(this).siblings('input[name="gType"]').val();
-            
+            var gType= $(this).siblings('input[name="gType"]').val();            
             var deassUrl = urlGroup+"?a=9&pId="+pName+"&pT="+pType+"&gId="+gName+"&gT="+gType;
-            
-            $.get(deassUrl, function(data) {
-                if (data == "1"){
-                    showMessage("note-success", "Group disassociation succesfull!");
-                    createPaginator(urlGroup, paneGroupAjax, handleGroupPaginationClick);
-                } else {
-                    showMessage("note-error", "Unable to disassociate group<br/>"+data);    
-                }
-            });
+            ajaxActionWithRefresh(deassUrl, "Group disassociation succesfull!", "Unable to disassociate group.", urlGroup, paneGroupAjax, handleGroupPaginationClick);
             $(this).parents(".dialog-children").dialog("close");
         });
         
@@ -93,7 +71,7 @@
             var url = urlGroup+"?p="+name+"&t="+type;         
             
             $.get(urlGroup+"?a=6&p="+name+"&t="+type, function(data) {
-                $("#groupCrumbs").html(data);
+                $(paneGroupBreadcrums).html(data);
             });            
             
             $.get(urlGroup+"?a=5&p="+name+"&t="+type, function(data) {
@@ -126,20 +104,11 @@
             modal: true,
             dialogClass: "dialogWithDropShadow",
             buttons: {
-                "Delete": function() {
-                                        
+                "Delete": function() {                                        
                     var name = $("#dialog-group-delete span.groupId").html();
                     var type= $("#dialog-group-delete span.groupType").html();
-                    
-                    $.get(urlGroup+"?a=2&gId="+name+"&t="+type, function(data) {
-                        if (data == "1"){
-                            showMessage("note-success", "Group delete succesfull!<br/>"+data);
-                            loadByAjax(paneGroupAjax, urlGroup);
-                        } else {
-                            showMessage("note-error", "Unable to delete group<br/>"+data);    
-                        }
-                    });
-                    
+                    var groupActionUrl = urlGroup+"?a=2&gId="+name+"&t="+type;
+                    ajaxActionWithRefresh(groupActionUrl, "Group delete succesfull!", "Unable to delete group.", urlGroup, paneGroupAjax, handleGroupPaginationClick);                    
                     $( this ).dialog( "close" );
                 },
                 Cancel: function() {
@@ -226,7 +195,7 @@
                                     </div>
                                 </c:otherwise>
                             </c:choose>
-                            <button value="deassign" class="idm-grp-deassign">Deassign...</button>
+                            <button class="idm-grp-deassign">Deassign...</button>
                         </li>
                     </c:forEach>                  
                 </ul>                

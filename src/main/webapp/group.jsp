@@ -19,10 +19,8 @@
     function handleGroupPaginationClick(new_page_id, pagination_container) {
         var gP = $.cookie(groupParentId);
         var gT = $.cookie(groupTypeId);    
-        $.cookie(offsetCookieGroup,new_page_id);
-        var url = urlGroup+"?uO="+new_page_id+"&p="+gP+"&t="+gT;        
-        loadByAjax(paneGroupAjax, url);            
-        return false;
+        var urlGroupWithParam = urlGroup+"?p="+gP+"&t="+gT;        
+        return abstractPaginationHandler(new_page_id, pagination_container, urlGroupWithParam, offsetCookieGroup, paneGroupAjax);
     }
     
     $(function() {
@@ -47,7 +45,7 @@
         createPaginator(urlGroup, paneGroupAjax, handleGroupPaginationClick);
         
         $.get(urlGroup+'?a=6', function(data) {
-            $("#groupCrumbs").html(data);
+            $(paneGroupBreadcrums).html(data);
         });
         
         $(".idm-grp-add").button({ icons: { primary: "ui-icon-plus" }}).click(function() {
@@ -65,15 +63,8 @@
                     var gId = $("#idm-grp-create-id").val();
                     var gType = $("#idm-grp-create-type").val();
                     var args = "gId="+gId+"&t="+gType;
-                    
-                    $.get(urlGroup+"?a=1&"+args, function(data) {
-                        if (data == "1"){
-                            showMessage("note-success", "Group add succesfull!<br/>"+data);
-                            loadByAjax(paneGroupAjax, urlGroup);
-                        } else {
-                            showMessage("note-error", "Unable to create group<br/>"+data);    
-                        }
-                    });
+                    var groupActionUrl = urlGroup+"?a=1&"+args;
+                    ajaxActionWithRefresh(groupActionUrl, "Group add succesfull!", "Unable to create group.", urlGroup, paneGroupAjax, handleGroupPaginationClick);                    
                     $(this).dialog( "close" );
                 },
                 Cancel: function() {
@@ -124,9 +115,9 @@
     , to see all groups click <a href="#/" id="idm-group-reset">here</a>)
 </div>
 
-<div id="groupCrumbs"></div>
+<div id="idm-group-breadcrumbs"></div>
 
-<div id="MyGroupContentArea">
+<div id="group-content-area">
     <div class='p1 pagi'></div>
     <div class='conajax'><img src="${pageContext.request.contextPath}/img/ajax-loader.gif" class="idm-ajax-load" /></div>    
     <div class='con'></div>

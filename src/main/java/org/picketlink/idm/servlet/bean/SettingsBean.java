@@ -2,7 +2,7 @@
  * JBoss, Home of Professional Open Source.
  * Copyright 2012, Red Hat Middleware LLC, and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
- * distribution for a full listing of individual contributors. 
+ * distribution for a full listing of individual contributors.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -27,13 +27,13 @@ import java.io.Serializable;
  *
  * @author vrockai
  */
-public class SettingsBean  implements Serializable{
+public class SettingsBean implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 5880034577974682140L;
-	private long id;
+     *
+     */
+    private static final long serialVersionUID = 5880034577974682140L;
+    private long id;
     private String jdbcURL = "none";
     private String username = "default";
     private String password = "defafult";
