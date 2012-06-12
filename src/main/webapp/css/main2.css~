@@ -1,0 +1,21 @@
+body {
+    font-family: verdana, sans-serif;
+    font-size: 18px;
+    margin: 10px auto 10px auto;
+    width: 70%;
+    background: #fff url('../img/gr_w2.png') repeat-x top;
+}
+
+div.main {
+    padding-top: 80px;
+    background: url('../img/picketlink_logo_450x.png') no-repeat top right;
+}
+
+h1 {
+    display: none;
+    margin: 0px 0px 0px auto;
+    font-family: Trebuchet, verdana, sans-serif;
+    text-transform: uppercase;
+    font-style: italic;
+    font-size: 32px;
+}

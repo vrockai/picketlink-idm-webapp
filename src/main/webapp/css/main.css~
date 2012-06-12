@@ -1,0 +1,173 @@
+body {
+    font-family: verdana, sans-serif;
+    margin: 10px auto 10px auto;
+    width: 800px;
+    background: #fff url('../img/gr_w2.png') repeat-x top;
+}
+
+div.main {
+    padding-top: 80px;
+    background: url('../img/picketlink_logo_450x.png') no-repeat top right;
+}
+
+div.main>div>ul, form.header {
+    -padding: 10px;
+}
+
+div.main>div>ul {
+    -border: 2px #000 solid;
+    background: #fff url('../img/gr_w.png') repeat-x bottom;
+}
+
+form.header {
+    border: 2px #000 solid;
+    border-bottom: none;    
+    background: #a5bbcd url('../img/gr_db.png') repeat-x;
+}
+
+ul.attribute {
+    border: 1px #000 solid;
+    padding: 5px;
+}
+
+form.headeralt{
+    border: 1px #000 solid;    
+    background: #ccd8d8 url('../img/gr_lb.png') repeat-x;
+    border-bottom: none;
+    font-size: 14px;
+    padding: 5px;
+}
+
+.op-form {
+    display: inline;
+    border-left: 4px #b5cbdd solid;
+    padding-left: 8px;
+    margin:0px;
+}
+
+.op-formalt {
+    display: inline;    
+    padding-left: 8px;
+    margin:0px;
+}
+
+h1 {
+    display: none;
+    margin: 0px 0px 0px auto;
+    font-family: Trebuchet, verdana, sans-serif;
+    text-transform: uppercase;
+    font-style: italic;
+    font-size: 32px;
+}
+
+h2 {
+    font-family: Trebuchet, verdana, sans-serif;
+    font-variant: small-caps;
+    font-style: italic;
+    font-size: 18px;
+    margin-bottom:3px
+}
+
+h3 {
+    display: block;
+    font-family: Trebuchet, verdana, sans-serif;
+    text-transform: uppercase;
+    font-style: italic;
+    font-size: 14px;
+    margin-bottom:0px;
+}
+
+.idm-button {
+    padding-left:16px;
+    display: inline;
+    border: none;
+    text-decoration: overline;
+    cursor: pointer;    
+}
+
+.idm-delbutton {
+    background: left no-repeat url('../img/process-stop.png');
+}
+
+.idm-addgrp {
+    background: left no-repeat url('../img/folder-new.png');
+}
+
+.idm-adduser {
+    background: left no-repeat url('../img/document-new.png');
+}
+
+.idm-add {
+    background: left no-repeat url('../img/list-add.png');
+}
+
+.idm-rename {
+    background: left no-repeat url('../img/accessories-text-editor.png');
+}
+
+.idm-remove {
+    background: left no-repeat url('../img/list-remove.png');
+}
+
+.idm-associate {
+    background: left no-repeat url('../img/contact-new.png');
+}
+
+.idm-name {
+    width: 200px;
+    color: #000;    
+}
+
+ul{
+    margin: 0px;
+    padding: 0px;
+    list-style-type: none;
+    display: block;
+}
+
+ul>li {    
+    padding: 5px;    
+    list-style-position: inside;
+}
+
+ul.user>li{
+    font-size: 22px;
+}
+
+li.user {
+    list-style-image: url('../img/system-users.png');    
+}
+
+ul.group>li {
+    list-style-image: url('../img/folder.png');
+}
+
+.att-div {
+    margin-top: 10px;
+    margin-left: 26px;
+}
+
+ul.attribute>li {
+    list-style-image: url('../img/text-x-generic.png');
+    font-size: 12px;    
+}
+
+idm-att-name {
+    width: 200px;
+}
+
+ul.alternate>li:nth-child(even) {
+    background: #e1eeee;
+}
+
+ul.attribute>li:nth-child(even) {
+    background: #e1eeee;
+}
+
+.idm-toolbar {
+    float:right;
+}
+
+span.bold {
+    font-weight: bold;
+}
