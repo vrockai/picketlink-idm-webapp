@@ -48,7 +48,7 @@
         $("button.idm-atts-open").button({ icons: { primary: "ui-icon-folder-collapsed" }});
         $("button.idm-atts-add").button({ icons: { primary: "ui-icon-plus" }});
         $("button.idm-delete").button({ icons: { primary: "ui-icon-closethick" }});
-        $("button.idm-but-upload").button({ icons: { primary: "ui-icon-folder-open"}});
+        $("div.idm-but-upload").button({ icons: { primary: "ui-icon-folder-open"}});
         $("button.idm-but-change").button({ icons: { primary: "ui-icon-key" }});
 
         $("button.idm-user-group").button({ icons: { secondary: "ui-icon-closethick" }}).click(function() {
@@ -63,6 +63,7 @@
             $( "#dialog-user-deassociate" ).dialog("open");
         });
 
+        $("button.idm-user-photo-save").button({ icons: { primary: "ui-icon-pencil"}});
         $("button.idm-user-edit-save").button({ icons: { primary: "ui-icon-pencil"}}).click(function() {
             var uname = $(this).siblings('input[name="uname"]').val();
             var fname = $(this).siblings('input[name="fname"]').val();
@@ -155,10 +156,10 @@
             $("#idm-user-att").html(userId);
 
             function handleAttPaginationClick(new_page_id, pagination_container) {
-                return abstractPaginationHandler(new_page_id, pagination_container, urlAtt+"?u="+userId, offsetCookieAtt, paneAttAjax);                
+                return abstractPaginationHandler(new_page_id, pagination_container, urlAtt+"?u="+userId, offsetCookieAtt, paneAttAjax);
             }
             createPaginator(urlAtt+"?u="+userId, paneAttAjax, handleAttPaginationClick);
-            
+
             $("#idm-att-add").button({ icons: { primary: "ui-icon-plus" }}).click(function() {
                 var aname = $("#idm-att-add-name").val();
                 var avalue = $("#idm-att-add-value").val();
@@ -185,10 +186,53 @@
             title: "Attribute editor"
         });
 
+        $('input[name="photo"]').change(function(e){
+
+            var userHash = $(this).parent().parent().siblings('input[name="hash"]').val();
+            
+            file = $(this).prop("files")[0];
+
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#imgEdit'+userHash)
+                .attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        $("button.idm-user-photo-save").click(function(){
+            var formData = new FormData($(this).parent().parent('form')[0]);
+            var userHash = $(this).siblings('input[name="hash"]').val();
+            var userId = $(this).siblings('input[name="id"]').val();
+
+            $("#imgList"+userHash).attr("src","img/282.gif");
+            $.ajax({
+                url: urlPhoto,  //server script to process data
+                type: 'POST',
+                beforeSend: function(){;},
+                success: function(){
+                    var newPhotoUrl = urlPhoto+"?u="+userId;
+                    $("#imgList"+userHash).attr("src",newPhotoUrl);
+                    $("#imgEdit"+userHash).attr("src",newPhotoUrl);
+                },
+                error: function(){alert("unknown error");},
+                // Form data
+                data: formData,
+                //Options to tell JQuery not to process data or worry about content-type
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        });
+
+        $('a.idm-lightbox-lnk').lightBox({fixedNavigation:true});
 
     });
 
 </script>
+
 <div id="dialog-user-atts">
     <form class="idm-inline-form ui-widget ui-widget-content ui-corner-all ui-idm-header">
         <label for="idm-att-add-name">Attribute name:
@@ -208,12 +252,7 @@
 
     <h2>Attribute list of user <span id="idm-user-att"></span></h2>
 
-    <div id="MyAttContentArea">
-        <div class='p1 pagi'></div>
-        <div class='conajax'><img src="${pageContext.request.contextPath}/img/ajax-loader.gif" class="idm-ajax-load" /></div>
-        <div class='con'></div>
-        <div class='p2 pagi'></div>
-    </div>
+    <div id="MyAttContentArea"></div>
 
 </div>
 
@@ -221,7 +260,7 @@
     <c:forEach var="user" items="${userPagiList}">
         <li class="user">
 
-            <img src='${pageContext.request.contextPath}/img/photo.jpg' width="90" class='idm-user-photo'/>
+            <a class="idm-lightbox-lnk idm-user-photo" href="${pageContext.request.contextPath}/photo?u=${user.userId}"><img src='${pageContext.request.contextPath}/photo?u=${user.userId}' id="imgList${user.hash}" width="90" class='idm-user-photo'/></a>
 
             <div class="idm-name idm-name-margin">${user.userId}</div>
 
@@ -274,6 +313,25 @@
             </script>
 
             <div id="edit${user.hash}"class="dialog-edit">
+
+                <form class="idm-basic-form" enctype="multipart/form-data" action="http://localhost:8080/jboss-idm-servlet/photo" method="post">
+                    <fieldset>
+                        <legend>User photo</legend>
+                        <label>User photo:
+                            <span class="small">Add your user ID</span>
+                        </label><img src='${pageContext.request.contextPath}/photo?u=${user.userId}' width="90" id="imgEdit${user.hash}" class='idm-user-photo' style="margin-right:100px"/>
+                        <input  type="hidden" name="id" value="${user.userId}"/>
+                        <label>Upload file:
+                            <span class="small">Choose your new photo:</span>
+                        </label>
+                        <div class="idm-but-upload idm idm-button" style="margin-left:0px;">Upload photo<input type="file" name="photo" style="opacity: 0; filter: alpha(opacity=0); position: absolute; right: 0px; top: 0; font-size: 40px;"/></div>
+                        <input  type="hidden" name="hash" value="${user.hash}"/>
+                        <!--<input type="submit" value="Add Photo"/>-->
+                        <button class="idm-user-photo-save" type="button">Save</button>
+                    </fieldset>
+                </form>
+
+
                 <form class="idm-basic-form">
                     <fieldset>
                         <input type="hidden" name="uname" value="${user.userId}"/>

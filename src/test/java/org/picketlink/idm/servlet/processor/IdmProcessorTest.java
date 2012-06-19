@@ -21,9 +21,13 @@
  */
 package org.picketlink.idm.servlet.processor;
 
+import java.io.RandomAccessFile;
 import java.util.Collection;
+
 import junit.framework.TestCase;
 import org.apache.log4j.Logger;
+import org.picketlink.idm.api.Attribute;
+import org.picketlink.idm.api.User;
 import org.picketlink.idm.common.exception.IdentityConfigurationException;
 import org.picketlink.idm.common.exception.IdentityException;
 import org.picketlink.idm.servlet.bean.GroupBean;
@@ -33,23 +37,24 @@ import org.picketlink.idm.servlet.bean.GroupBean;
  * @author vrockai
  */
 public class IdmProcessorTest extends TestCase {
-
+    
     @SuppressWarnings("unused")
     private static final Logger log = Logger.getLogger(IdmProcessorTest.class.getName());
-
+    
     public void testAssociateGroup() throws IdentityConfigurationException, IdentityException {
         IdmProcessor idmProc = new IdmProcessor();
-
+        
+        idmProc.beginTransaction();
         String gpName = "GroupParentName";
         String gcName = "GroupChildName";
         String gType = "root_type";
-
+        
         idmProc.createGroup(gpName);
         idmProc.createGroup(gcName);
-
+        
         idmProc.associateGroup(gpName, gType, gcName, gType);
         Collection<GroupBean> gbCol = idmProc.getGroupsByRange(0, 10, "*");
-
+        
         for (GroupBean gb : gbCol) {
             if (gb.getName().equals(gcName)) {
                 assertEquals(gb.getChildrenCount(), 0);
@@ -59,5 +64,30 @@ public class IdmProcessorTest extends TestCase {
                 assertEquals(gb.getChildren().iterator().next().getName(), gcName);
             }
         }
+        idmProc.commitTransaction();
+    }
+    
+    public void testUploadPic() throws Exception {
+        
+        String userId = "Trilety";
+        
+        RandomAccessFile pfile = new RandomAccessFile("/home/vrockai/viliam_avatar.jpg", "r");
+        byte[] b = new byte[(int) pfile.length()];
+        pfile.read(b);
+        
+        IdmProcessor idmProc = new IdmProcessor();
+        
+        idmProc.beginTransaction();
+        
+        User u = idmProc.createUser(userId);
+        idmProc.uploadPicture(userId, b);
+        Attribute a = idmProc.getAttributes(u).get("picture");
+        
+        log.info("Picture: "+(byte[])a.getValue());
+        
+        byte[] x = new byte[]{0};
+        log.info("XLL"+x.length);
+        
+        idmProc.commitTransaction();
     }
 }

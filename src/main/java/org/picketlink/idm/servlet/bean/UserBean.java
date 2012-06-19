@@ -39,6 +39,21 @@ public class UserBean implements Serializable{
 	private User user;
     private Collection<Group> associatedGroups;
     private String userId;
+    private byte[] photo_image;
+
+    private boolean photo = false;
+
+    public boolean isPhoto() {
+        return photo_image.length > 1;
+    }
+        
+    public byte[] getPhoto() {
+        return photo_image;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo_image = photo;
+    }
     private Collection<AttributeBean> attributes;
     private String fname;
     private String lname;
@@ -116,4 +131,5 @@ public class UserBean implements Serializable{
     public String getHash() {
         return userId.replace(" ", "_");
     }
+
 }

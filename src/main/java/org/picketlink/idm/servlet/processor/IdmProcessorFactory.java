@@ -19,9 +19,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-
 package org.picketlink.idm.servlet.processor;
-import javax.ejb.Singleton;
 
 import org.apache.log4j.Logger;
 
@@ -29,21 +27,16 @@ import org.apache.log4j.Logger;
  *
  * @author vrockai
  */
-@Singleton
 public class IdmProcessorFactory {
 
     @SuppressWarnings("unused")
-	private static final Logger log = Logger.getLogger(IdmProcessorFactory.class.getName());
+    private static final Logger log = Logger.getLogger(IdmProcessorFactory.class.getName());
+    private static final IdmProcessor idmProc = new IdmProcessor();
 
     private IdmProcessorFactory() {
-        
     }
-    
-    private static class IdmProcessorHolder {
-        private static final IdmProcessor idmProc = new IdmProcessor();
-    }
-    
+
     public static IdmProcessor getIdmProcessor() {
-        return IdmProcessorHolder.idmProc;
+        return idmProc;
     }
 }

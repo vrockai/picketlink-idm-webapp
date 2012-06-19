@@ -1,61 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    
+    
+                     
+    <filter>
+        <filter-name>TransactionFilter</filter-name>
+        <filter-class>org.picketlink.idm.servlet.filter.TransactionFilter</filter-class>
+    </filter>
+  
+  <servlet>
+        <servlet-name>ImageServlet</servlet-name>
+        <servlet-class>org.picketlink.idm.servlet.ImageServlet</servlet-class>
+    </servlet>
+    
     <servlet>
         <servlet-name>IdmServlet</servlet-name>
         <servlet-class>org.picketlink.idm.servlet.IdmServlet</servlet-class>
     </servlet>
+    
     <servlet>
         <servlet-name>UserServlet</servlet-name>
         <servlet-class>org.picketlink.idm.servlet.UserServlet</servlet-class>
     </servlet>
+    
     <servlet>
         <servlet-name>AttributeServlet</servlet-name>
         <servlet-class>org.picketlink.idm.servlet.AttributeServlet</servlet-class>
     </servlet>
     <servlet>
+        
         <servlet-name>GroupServlet</servlet-name>
         <servlet-class>org.picketlink.idm.servlet.GroupServlet</servlet-class>
     </servlet>
+    
     <servlet>
         <servlet-name>RoletypeServlet</servlet-name>
         <servlet-class>org.picketlink.idm.servlet.RoletypeServlet</servlet-class>
     </servlet>
+    
     <servlet>
         <servlet-name>RoleServlet</servlet-name>
         <servlet-class>org.picketlink.idm.servlet.RoleServlet</servlet-class>
     </servlet>
+    
     <servlet>
         <servlet-name>AutocompleteServlet</servlet-name>
         <servlet-class>org.picketlink.idm.servlet.AutocompleteServlet</servlet-class>
     </servlet>
+    
+    <filter-mapping>
+        <filter-name>TransactionFilter</filter-name>
+        <servlet-name>IdmServlet</servlet-name>
+    </filter-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>ImageServlet</servlet-name>
+        <url-pattern>/photo</url-pattern>
+    </servlet-mapping>
+        
     <servlet-mapping>
         <servlet-name>IdmServlet</servlet-name>
         <url-pattern>/idm</url-pattern>
     </servlet-mapping>
+        
     <servlet-mapping>
         <servlet-name>UserServlet</servlet-name>
         <url-pattern>/user</url-pattern>
     </servlet-mapping>
+    
+    <filter-mapping>
+        <filter-name>TransactionFilter</filter-name>
+        <servlet-name>ImageServlet</servlet-name>
+    </filter-mapping>    
+    
+    <filter-mapping>
+        <filter-name>TransactionFilter</filter-name>
+        <servlet-name>UserServlet</servlet-name>
+    </filter-mapping>
+    
     <servlet-mapping>
         <servlet-name>AttributeServlet</servlet-name>
         <url-pattern>/attribute</url-pattern>
     </servlet-mapping>
+    
+    <filter-mapping>
+        <filter-name>TransactionFilter</filter-name>
+        <servlet-name>AttributeServlet</servlet-name>
+    </filter-mapping>
+    
     <servlet-mapping>
         <servlet-name>GroupServlet</servlet-name>
         <url-pattern>/group</url-pattern>
     </servlet-mapping>
+    <filter-mapping>
+        <filter-name>TransactionFilter</filter-name>
+        <servlet-name>GroupServlet</servlet-name>
+    </filter-mapping>
+    
     <servlet-mapping>
         <servlet-name>RoleServlet</servlet-name>
         <url-pattern>/role</url-pattern>
     </servlet-mapping>
+    <filter-mapping>
+        <filter-name>TransactionFilter</filter-name>
+        <servlet-name>RoleServlet</servlet-name>
+    </filter-mapping>
+    
     <servlet-mapping>
         <servlet-name>RoletypeServlet</servlet-name>
         <url-pattern>/roletype</url-pattern>
     </servlet-mapping>
+    <filter-mapping>
+        <filter-name>TransactionFilter</filter-name>
+        <servlet-name>RoletypeServlet</servlet-name>
+    </filter-mapping>
+    
     <servlet-mapping>
         <servlet-name>AutocompleteServlet</servlet-name>
         <url-pattern>/auto</url-pattern>
     </servlet-mapping>
+    <filter-mapping>
+        <filter-name>TransactionFilter</filter-name>
+        <servlet-name>AutocompleteServlet</servlet-name>
+    </filter-mapping>
     <!-- 
     <jsp-config>
         <taglib>

@@ -135,9 +135,4 @@
     , to see all users click <a href="#/" id="idm-lnk-user-reset">here</a>)
 </div>
 
-<div id="MyContentArea">
-    <div class='p1 pagi'></div>
-    <div class='conajax'><img src='${pageContext.request.contextPath}/img/ajax-loader.gif' class="idm-ajax-load" /></div>
-    <div class='con'></div>
-    <div class='p2 pagi'></div>
-</div>
+<div id="MyContentArea"></div>

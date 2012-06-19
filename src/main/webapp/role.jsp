@@ -150,9 +150,4 @@
     , to see all roles click <a href="#/" id="idm-role-reset">here</a>)
 </div>
 
-<div id="MyRoleContentArea">
-    <div class='p1 pagi'></div>
-    <div class='conajax'><img src='${pageContext.request.contextPath}/img/ajax-loader.gif' class="idm-ajax-load" /></div>
-    <div class='con'></div>
-    <div class='p2 pagi'></div>
-</div>
+<div id="MyRoleContentArea"></div>

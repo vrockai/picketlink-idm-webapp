@@ -42,7 +42,7 @@
         <property name="hibernate.connection.password"></property>
         <property name="hibernate.hbm2ddl.auto">create-drop</property>
 
-
+-->
 
         <property name="hibernate.connection.url">
             jdbc:mysql://vmg02.mw.lab.eng.bos.redhat.com/gateinjcr
@@ -54,8 +54,8 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.connection.username">gateinjcr</property>
         <property name="hibernate.connection.password">gateinjcr</property>
--->     
 
+<!--
          <property name="current_session_context_class">thread</property>
         <property name="hibernate.connection.url">
             jdbc:mysql://localhost/jboss_portal7
@@ -67,6 +67,6 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">rooter</property>
-
+-->     
     </session-factory>
 </hibernate-configuration>
