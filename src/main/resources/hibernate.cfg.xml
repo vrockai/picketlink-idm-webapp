@@ -31,42 +31,12 @@
         <property name="show_sql">false</property>
         <property name="cache.use_second_level_cache">true</property>
         <property name="cache.use_query_cache">true</property>
-
         <property name="current_session_context_class">thread</property>
-<!--
-
         <property name="hibernate.connection.url">jdbc:hsqldb:mem:jbossidm</property>
         <property name="hibernate.connection.driver_class">org.hsqldb.jdbcDriver</property>
         <property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>
         <property name="hibernate.connection.username">sa</property>
         <property name="hibernate.connection.password"></property>
-        <property name="hibernate.hbm2ddl.auto">create-drop</property>
-
--->
-
-        <property name="hibernate.connection.url">
-            jdbc:mysql://vmg02.mw.lab.eng.bos.redhat.com/gateinjcr
-        </property>
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-        <property name="hibernate.hbm2ddl.auto">create-drop</property>
-
         <property name="hibernate.hbm2ddl.auto">update</property>
-        <property name="hibernate.connection.username">gateinjcr</property>
-        <property name="hibernate.connection.password">gateinjcr</property>
-
-<!--
-         <property name="current_session_context_class">thread</property>
-        <property name="hibernate.connection.url">
-            jdbc:mysql://localhost/jboss_portal7
-        </property>
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-        <property name="hibernate.hbm2ddl.auto">create-drop</property>
-
-        <property name="hibernate.hbm2ddl.auto">update</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">rooter</property>
--->     
     </session-factory>
 </hibernate-configuration>

@@ -132,9 +132,6 @@
         $("button.idm-edit-open").click(function() {
             $("#edit"+$(this).attr("value")).dialog("open");
         });
-
-
-
     });
 </script>
 <div id="dialog-user-delete" title="Delete user">
@@ -213,11 +210,16 @@
                 type: 'POST',
                 beforeSend: function(){;},
                 success: function(){
+                    showMessage("note-success", "User photo was uploaded.");
+                },
+                complete: function(){
                     var newPhotoUrl = urlPhoto+"?u="+userId;
                     $("#imgList"+userHash).attr("src",newPhotoUrl);
                     $("#imgEdit"+userHash).attr("src",newPhotoUrl);
                 },
-                error: function(){alert("unknown error");},
+                error: function(){
+                    showMessage("note-error", "Unable to upload user photo.");
+                },
                 // Form data
                 data: formData,
                 //Options to tell JQuery not to process data or worry about content-type
@@ -228,7 +230,6 @@
         });
 
         $('a.idm-lightbox-lnk').lightBox({fixedNavigation:true});
-
     });
 
 </script>
@@ -275,13 +276,6 @@
 
             <div class="idm-toolbar">
                 <span>groups: </span>
-                <!--
-                <ul class="idm-grp-ass">
-                <c:forEach var="userGroup" items="${user.associatedGroups}">
-                    <li>${userGroup.name}<input type="hidden" value="${userGroup.groupType}"/></li>
-                </c:forEach>
-            </ul>
-                -->
                 <ul class="ui-widget ui-widget-content ui-corner-all idm-ul-inline">
                     <c:forEach var="userGroup" items="${user.associatedGroups}">
                         <li>
@@ -307,8 +301,6 @@
                     });
 
                     $("#edit${user.hash} button").button();
-
-
                 });
             </script>
 
@@ -330,7 +322,6 @@
                         <button class="idm-user-photo-save" type="button">Save</button>
                     </fieldset>
                 </form>
-
 
                 <form class="idm-basic-form">
                     <fieldset>

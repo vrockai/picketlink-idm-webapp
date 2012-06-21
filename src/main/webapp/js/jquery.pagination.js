@@ -100,7 +100,9 @@ jQuery.fn.pagination = function(opts){
                 
                 var lnk;
                 
-                if(page_id == current_page){
+                var np = numPages();
+                
+                if((page_id == current_page)||(np == 0)){
                     lnk = jQuery("<span class='current'>"+(appendopts.text)+"</span>");
                 }
                 else

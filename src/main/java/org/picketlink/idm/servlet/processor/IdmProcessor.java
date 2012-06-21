@@ -21,7 +21,6 @@
  */
 package org.picketlink.idm.servlet.processor;
 
-import java.io.RandomAccessFile;
 import java.util.*;
 import java.util.logging.Level;
 import org.apache.log4j.Logger;
@@ -49,7 +48,7 @@ public class IdmProcessor {
     private static Logger log = Logger.getLogger(IdmProcessor.class.getName());
     private IdentitySession identitySession = null;
     private IdentitySessionFactory identitySessionFactory = null;
-    private String GROUP = "root_type";
+    public static final String GROUP = "root_type";
 
     public IdmProcessor() {
         try {
@@ -82,21 +81,9 @@ public class IdmProcessor {
         Configuration cfg = new Configuration().setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLInnoDBDialect").setProperty("hibernate.connection.datasource", "java:comp/env/jdbc/test").setProperty("hibernate.order_updates", "true");
         identityConfiguration.getIdentityConfigurationRegistry().register(cfg, "hibernateSessionFactory");
         identitySessionFactory = identityConfiguration.buildIdentitySessionFactory();
-        identitySession = identitySessionFactory.createIdentitySession("idm_realm");
-        beginTransaction();
-        log.info("ps");
-        uploadPicture();
-        log.info("pe");
-        commitTransaction();
+        identitySession = identitySessionFactory.createIdentitySession("idm_realm");        
     }
 
-    public void uploadPicture() throws Exception {
-        RandomAccessFile pfile = new RandomAccessFile("/home/vrockai/viliam_avatar.jpg", "r");
-        byte[] b = new byte[(int) pfile.length()];
-        pfile.read(b);
-        uploadPicture("cupi", b);
-    }
-    
     public void uploadPicture(String username, byte[] picture) throws IdentityException {
         AttributesManager attManager = identitySession.getAttributesManager();
 
@@ -175,15 +162,15 @@ public class IdmProcessor {
         return userBeanList;
 
     }
-
-    public Collection<GroupBean> findGroup(String term) throws IdentityException, UnsupportedCriterium {
+    
+    public Collection<GroupBean> findGroup(String term, String groupType) throws IdentityException, UnsupportedCriterium {
 
         Collection<GroupBean> groups = new ArrayList<GroupBean>();
 
         try {
             IdentitySearchCriteria isc = new IdentitySearchCriteriaImpl().nameFilter("*" + term + "*");
 
-            Collection<Group> groupList = identitySession.getPersistenceManager().findGroup(GROUP, isc);
+            Collection<Group> groupList = identitySession.getPersistenceManager().findGroup(groupType, isc);
 
             for (Group g : groupList) {
 
@@ -215,6 +202,10 @@ public class IdmProcessor {
         }
         return groups;
 
+    }
+
+    public Collection<GroupBean> findGroup(String term) throws IdentityException, UnsupportedCriterium {
+        return findGroup(term,GROUP);
     }
 
     public Collection<RoleType> findRoletype(String term) throws IdentityException, UnsupportedCriterium {
@@ -297,7 +288,7 @@ public class IdmProcessor {
         return result;
     }
 
-    private int getGroupCount(String gType) {
+    public int getGroupCount(String gType) {
         int result = 0;
         try {
 
@@ -494,27 +485,30 @@ public class IdmProcessor {
 
         return attList;
     }
-    
-    public UserBean getUser(String userId) throws IdentityException{
+
+    public UserBean getUser(String userId) throws IdentityException {
         User u = identitySession.getPersistenceManager().findUser(userId);
+        
+        if (u == null)
+            return null;
+        
+        UserBean ub = new UserBean(u);
+        ub.setAttributes(convertAttributes(getAttributeCollection(u)));
+        Attribute fname = getAttribute("firstName", u);
+        ub.setFname(fname != null && fname.getValue() != null ? fname.getValue().toString() : "");
+        Attribute lname = getAttribute("lastName", u);
+        ub.setLname(lname != null && lname.getValue() != null ? lname.getValue().toString() : "");
+        Attribute email = getAttribute("email", u);
+        ub.setEmail(email != null && email.getValue() != null ? email.getValue().toString() : "");
+        Attribute image = getAttribute("picture", u);
 
-            UserBean ub = new UserBean(u);
-            ub.setAttributes(convertAttributes(getAttributeCollection(u)));
-            Attribute fname = getAttribute("firstName", u);
-            ub.setFname(fname != null && fname.getValue() != null ? fname.getValue().toString() : "");
-            Attribute lname = getAttribute("lastName", u);
-            ub.setLname(lname != null && lname.getValue() != null ? lname.getValue().toString() : "");
-            Attribute email = getAttribute("email", u);
-            ub.setEmail(email != null && email.getValue() != null ? email.getValue().toString() : "");
-            Attribute image = getAttribute("picture", u);
-            
 
-            ub.setImage(image != null && image.getValue() != null ? image.getValue().toString() : "");
-            ub.setPhoto(image != null && image.getValue() != null ? (byte[]) image.getValue() : new byte[]{0});
-            
-            ub.setAssociatedGroups(getAssignedGroups(u.getId()));
-            
-            return ub;
+        ub.setImage(image != null && image.getValue() != null ? image.getValue().toString() : "");
+        ub.setPhoto(image != null && image.getValue() != null ? (byte[]) image.getValue() : new byte[]{0});
+
+        ub.setAssociatedGroups(getAssignedGroups(u.getId()));
+
+        return ub;
     }
 
     public Attribute getAttribute(String attName, IdentityType it) {
