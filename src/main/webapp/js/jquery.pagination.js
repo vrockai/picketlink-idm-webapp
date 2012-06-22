@@ -32,6 +32,7 @@ jQuery.fn.pagination = function(opts){
 
     // Extract current_page from options
     var current_page = opts.current_page;    
+    
         
     return this.each(function() {
         
@@ -41,7 +42,7 @@ jQuery.fn.pagination = function(opts){
         function numPages() {
             return Math.ceil(opts.maxentries/opts.items_per_page);
         }
-		
+        		
         /**
 		 * Calculate start and end point of pagination links depending on 
 		 * current_page and num_display_entries.
@@ -82,7 +83,7 @@ jQuery.fn.pagination = function(opts){
        
             panel.empty();
             var interval = getInterval();
-            var np = numPages();
+            var np = numPages();  
             
             // This helper function returns a handler function that calls pageSelected with the right page_id
             var getClickHandler = function(page_id) {
@@ -92,7 +93,10 @@ jQuery.fn.pagination = function(opts){
             };
             // Helper function for generating a single link (or a span tag if it's the current page)
             var appendItem = function(page_id, appendopts){
+
+                //var np = numPages();                    
                 page_id = page_id<=0?0:(page_id<=np-1?page_id:np-1); // Normalize page id to sane value
+
                 appendopts = jQuery.extend({
                     text:page_id+1, 
                     classes:""
@@ -100,9 +104,7 @@ jQuery.fn.pagination = function(opts){
                 
                 var lnk;
                 
-                var np = numPages();
-                
-                if((page_id == current_page)||(np == 0)){
+                if((page_id == current_page)||(np < 2)){
                     lnk = jQuery("<span class='current'>"+(appendopts.text)+"</span>");
                 }
                 else
@@ -135,7 +137,7 @@ jQuery.fn.pagination = function(opts){
             if (interval[0] > 0 && opts.num_edge_entries > 0)
             {
                 var end = Math.min(opts.num_edge_entries, interval[0]);
-                for(var i=0; i<end; i++) {
+                for(var i=0; i<end; i++) {                    
                     appendItem(i);
                 }
                 if(opts.num_edge_entries < interval[0] && opts.ellipse_text)
@@ -146,7 +148,7 @@ jQuery.fn.pagination = function(opts){
             }
             
             // Generate interval links
-            for(var i=interval[0]; i<interval[1]; i++) {
+            for(var i=interval[0]; i<interval[1]; i++) {                
                 appendItem(i);
             }
             // Generate ending points

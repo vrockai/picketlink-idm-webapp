@@ -98,28 +98,30 @@ public class IdmProcessor {
 
     @Deprecated
     @SuppressWarnings("ucd")
-    public void initializeDB() {
-        try {
+    public void initializeDB() throws IdentityException, FeatureNotSupportedException {        
             identitySession.beginTransaction();
 
-            identitySession.getPersistenceManager().createUser("John Doe");
-            User usr1 = identitySession.getPersistenceManager().createUser("Viliam Rockai");
-            identitySession.getPersistenceManager().createUser("Prabhat Jha");
-            identitySession.getPersistenceManager().createGroup("grupa1", GROUP);
-            Group grp1 = identitySession.getPersistenceManager().createGroup("grupa2", GROUP);
-            identitySession.getPersistenceManager().createGroup("pogrup", GROUP);
-            identitySession.getRelationshipManager().associateUser(grp1, usr1);
+            identitySession.getPersistenceManager().createUser("jdoe");
+            User user = identitySession.getPersistenceManager().createUser("vrockai");
+            identitySession.getPersistenceManager().createUser("pjha");
+            identitySession.getPersistenceManager().createUser("bdaw");
+            identitySession.getPersistenceManager().createUser("mposolda");
+            identitySession.getPersistenceManager().createUser("mvanco");
+            identitySession.getPersistenceManager().createGroup("group-basic", GROUP);
+            Group group = identitySession.getPersistenceManager().createGroup("group-advanced", GROUP);
+            Group groupChild = identitySession.getPersistenceManager().createGroup("subgroup", GROUP);
+            identitySession.getRelationshipManager().associateGroups(group, groupChild);            
+            identitySession.getRelationshipManager().associateUser(group, user);
 
             RoleManager roleManager = identitySession.getRoleManager();
-            RoleType roletype = roleManager.createRoleType("new_roletype");
-
-            roleManager.createRole(roletype, usr1, grp1);
+            RoleType roletype = roleManager.createRoleType("member");
+            roleManager.createRoleType("administrator");
+            roleManager.createRoleType("validator");
+            
+            roleManager.createRole(roletype, user, group);
 
             identitySession.getTransaction().commit();
             identitySession.close();
-        } catch (Exception ex) {
-            log.info(ex.getLocalizedMessage());
-        }
     }
 
     private Collection<Group> getAssignedGroups(String username) {
@@ -345,12 +347,21 @@ public class IdmProcessor {
 
     public UserBean getAttributesByRange(int offset, int numberOfRows, String query, String user) {
 
+        query = "*"+query+"*";
+        
+        String regexp = query.replace("*", ".*");
+        
         UserBean ub = null;
         try {
             User u = identitySession.getPersistenceManager().findUser(user);
             ub = new UserBean(u);
             Collection<Attribute> atts = getAttributeCollection(u);
-            List<Attribute> attsAlist = new ArrayList<Attribute>(atts);
+            List<Attribute> attsAlist = new ArrayList<Attribute>();
+            for(Attribute a: atts){
+                if (a.getName().matches(regexp)){
+                    attsAlist.add(a);
+                }
+            }
 
             int min = offset;
             int max = offset + numberOfRows;
@@ -543,12 +554,9 @@ public class IdmProcessor {
         Collection<Attribute> attList = new ArrayList<Attribute>();
 
         try {
-
             AttributesManager attManager = identitySession.getAttributesManager();
-
             Map<String, Attribute> attributes = attManager.getAttributes(it);
             attList = attributes.values();
-
         } catch (IdentityException ex) {
             log.error(ex);
         }
@@ -673,15 +681,12 @@ public class IdmProcessor {
     }
 
     public void associateGroup(String pId, String pType, String gId, String gType) throws IdentityException {
-
-
         Group parent = identitySession.getPersistenceManager().findGroup(pId, pType);
         Group child = identitySession.getPersistenceManager().findGroup(gId, gType);
 
         if (!identitySession.getRelationshipManager().isAssociated(parent, child)) {
             identitySession.getRelationshipManager().associateGroups(parent, child);
         }
-
     }
 
     public void deassociateGroup(String pId, String pType, String gId, String gType) throws IdentityException {

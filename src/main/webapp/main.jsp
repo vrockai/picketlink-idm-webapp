@@ -26,11 +26,6 @@
                     autoOpen: false
                 });
 
-                hideAllMessages();
-
-                $('.note-message').click(function(){
-                    $(this).animate({top: -$(this).outerHeight()}, 500);
-                });
 
                 function handleGroupSelPaginationClick(new_page_id, pagination_container) {
                     var browseUrl = urlGroup+"?g=*&t=root_type&a=7";
@@ -142,9 +137,10 @@
                     <jsp:include page="roletype.jsp"/>
                 </div>
                 <div id="tabs-5">
-                    <div id="switcher"></div>
+                    <jsp:include page="preferences.jsp"/>
                 </div>
             </div>
         </div>
+        <jsp:include page="footer.jsp"/>
     </body>
 </html>

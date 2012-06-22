@@ -47,12 +47,7 @@
         <servlet-name>AutocompleteServlet</servlet-name>
         <servlet-class>org.picketlink.idm.servlet.AutocompleteServlet</servlet-class>
     </servlet>
-    
-    <filter-mapping>
-        <filter-name>TransactionFilter</filter-name>
-        <servlet-name>IdmServlet</servlet-name>
-    </filter-mapping>
-    
+        
     <servlet-mapping>
         <servlet-name>ImageServlet</servlet-name>
         <url-pattern>/photo</url-pattern>

@@ -150,3 +150,13 @@ function loadByAjax(ajaxPane, url){
         $(ajaxPane + " div.con").fadeIn();
     });
 }
+
+$(document).ready(function() {
+    hideAllMessages();
+
+    $('.note-message').click(function(){
+        $(this).animate({
+            top: -$(this).outerHeight()
+            }, 500);
+    });
+});
