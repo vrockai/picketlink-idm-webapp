@@ -21,12 +21,15 @@ public class TransactionFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) {
         IdmProcessor idmProc = IdmProcessorFactory.getIdmProcessor();
+        log.trace("do filter");
         try {
             idmProc.beginTransaction();
             filterChain.doFilter(request, response);
-            idmProc.commitTransaction();
+            idmProc.commitTransaction();            
         } catch (Exception ex) {
             throw new RuntimeException(ex);
+        } finally {
+            log.trace("end filter");
         }
     }
 

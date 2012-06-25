@@ -20,7 +20,7 @@
         var userOffset = $.cookie(offsetCookieUser);
 
         $("button.idm-edit-open").button({ icons: { primary: "ui-icon-pencil" }});
-
+       
         $("button.idm-user-roles").button({ icons: { primary: "ui-icon-tag" }}).click(function() {
             var user = $(this).val();
             var url = urlRole+"?u="+user;
@@ -64,6 +64,8 @@
         });
 
         $("button.idm-user-photo-save").button({ icons: { primary: "ui-icon-pencil"}});
+        
+        $("button.idm-user-edit-save").unbind();
         $("button.idm-user-edit-save").button({ icons: { primary: "ui-icon-pencil"}}).click(function() {
             var uname = $(this).siblings('input[name="uname"]').val();
             var fname = $(this).siblings('input[name="fname"]').val();
@@ -72,9 +74,10 @@
 
             editUrl = urlUser+"?a=3&uId="+uname+"&uFn="+fname+"&uLn="+lname+"&uEm="+email;
 
-            ajaxAction(editUrl, "Attribute edit succesfull.", "Unable to edit attribute." );
+            ajaxAction(editUrl, "Attribute edit succesfull.", "Unable to edit attribute." );     
         });
 
+        $("button.idm-user-edit-passwd").unbind();
         $("button.idm-user-edit-passwd").button({ icons: { primary: "ui-icon-pencil"}}).click(function() {
             var uname = $(this).siblings('input[name="uname"]').val();
             var pass1 = $(this).siblings('input[name="newPass"]').val();
@@ -84,7 +87,7 @@
 
             ajaxAction(editUrl, "Password change succesfull.", "Unable to change password." );
         });
-
+ 
         $("button.idm-delete").click(function() {
             $("#userId").html($(this).attr("value"));
             $( "#dialog-user-delete" ).dialog("open");
@@ -146,8 +149,8 @@
     $(document).ready(function() {
 
         var attOffset = $.cookie(offsetCookieAtt);
-
-        $("button.idm-atts-open").click(function() {
+        
+        $("button.idm-atts-open").click(function() {            
             $( "#dialog-user-atts" ).dialog("open");
             var userId = $(this).val();
             $("#idm-user-att").html(userId);
@@ -167,22 +170,15 @@
             });
         });
 
-        $("button.idm-att-roles").button({ icons: { primary: "ui-icon-tag" }}).click(function() {
+        var att_roles_button = $("button.idm-att-roles").button({ icons: { primary: "ui-icon-tag" }})
+  
+        att_roles_button.click(function() {
             var user = $(this).val();
             var url = urlAtt+"?u="+user;
             loadByAjax(paneAttAjax, url);
             $(paneTabs).tabs('select', 2);
         });
-
-
-        $( "#dialog-user-atts" ).dialog({
-            autoOpen: false,
-            modal: true,
-            width: 900,
-            dialogClass: "dialogWithDropShadow",
-            title: "Attribute editor"
-        });
-
+  
         $('input[name="photo"]').change(function(e){
 
             var userHash = $(this).parent().parent().siblings('input[name="hash"]').val();
@@ -199,7 +195,8 @@
             reader.readAsDataURL(file);
         });
 
-        $("button.idm-user-photo-save").click(function(){
+        $("button.idm-user-photo-save").unbind();
+        $("button.idm-user-photo-save").click(function(){            
             var formData = new FormData($(this).parent().parent('form')[0]);
             var userHash = $(this).siblings('input[name="hash"]').val();
             var userId = $(this).siblings('input[name="id"]').val();
@@ -226,10 +223,19 @@
                 cache: false,
                 contentType: false,
                 processData: false
-            });
+            });            
         });
 
         $('a.idm-lightbox-lnk').lightBox({fixedNavigation:true});
+        
+        $( "#dialog-user-atts" ).dialog({
+            autoOpen: false,
+            modal: true,
+            width: 900,
+            dialogClass: "dialogWithDropShadow",
+            title: "Attribute editor"
+        });
+
     });
 
 </script>
@@ -299,7 +305,7 @@
                         dialogClass: "dialogWithDropShadow",
                         title: "${user.userId} edit"
                     });
-
+                    
                     $("#edit${user.hash} button").button();
                 });
             </script>

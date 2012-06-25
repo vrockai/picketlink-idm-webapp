@@ -47,7 +47,7 @@ abstract class IdmCrudServlet extends IdmBasicServlet {
         String customPage = jsp_page;
         
         int action = getIntParameter(request, "a", ACTION);
-        
+        log.trace("action: "+action);
         try {
             switch (action) {
                 case 0:
@@ -71,9 +71,6 @@ abstract class IdmCrudServlet extends IdmBasicServlet {
             }
        } catch (Exception e) {
             log.error(e);
-            log.error(e.getCause());
-            log.error(e.getLocalizedMessage());
-            log.error(e.getStackTrace());
             e.printStackTrace();
        }
 

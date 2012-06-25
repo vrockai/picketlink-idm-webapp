@@ -47,6 +47,9 @@
                     var type = $("#idm-group-sel-type").val();
 
                     function handleGroupSelPaginationClick(new_page_id, pagination_container) {
+                        if (new_page_id == null){
+                            new_page_id = 0;
+                        }
                         var url = urlGroup+"?g="+name+"&t="+type+"&a=7&uO="+new_page_id;
                         loadByAjax(paneGroupSelAjax, url);
                         return false;
@@ -102,7 +105,7 @@
                     <span class="small msg">Add group type:</span>
                 </label>
 
-                <input type="text" name="GroupType" value="*" id="idm-group-sel-type" class="ui-widget ui-state-default ui-corner-all idm" />
+                <input type="text" name="GroupType" value="root_type" id="idm-group-sel-type" class="ui-widget ui-state-default ui-corner-all idm" />
 
                 <button id="idm-grp-select" type="button">Search</button>
             </form>

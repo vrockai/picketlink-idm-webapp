@@ -127,18 +127,20 @@ function abstractAjaxAction(actionUrl, successMessage, errorMessage, browseUrl, 
             if (isRefresh){
                 createPaginator(browseUrl, browsePane, browseHandler);
             }
+            return true;
         } else {
             showMessage("note-error", errorMessage+"<br/>Error message: "+data);
+            return false;
         }
     });
 }
 
 function ajaxAction(actionUrl, successMessage, errorMessage){
-    abstractAjaxAction(actionUrl, successMessage, errorMessage, null, null, null, false);
+    return abstractAjaxAction(actionUrl, successMessage, errorMessage, null, null, null, false);
 }
 
 function ajaxActionWithRefresh(actionUrl, successMessage, errorMessage, browseUrl, browsePane, browseHandler){
-    abstractAjaxAction(actionUrl, successMessage, errorMessage, browseUrl, browsePane, browseHandler, true);
+    return abstractAjaxAction(actionUrl, successMessage, errorMessage, browseUrl, browsePane, browseHandler, true);
 }
 
 function loadByAjax(ajaxPane, url){

@@ -4,15 +4,9 @@
  */
 package org.picketlink.idm.servlet;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,6 +28,7 @@ public class ImageServlet extends IdmBasicServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        log.trace("do image");
         try {
             IdmProcessor idmProc = IdmProcessorFactory.getIdmProcessor();
 
@@ -50,6 +45,8 @@ public class ImageServlet extends IdmBasicServlet {
             }
         } catch (IdentityException ex) {
             log.info(ex);
+        } finally {
+            log.trace("end image");
         }
 
     }
@@ -58,40 +55,40 @@ public class ImageServlet extends IdmBasicServlet {
     public void doPost(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, java.io.IOException {
-
+        log.trace("do post");
         response.setContentType("text/html;charset=UTF-8");
 
         log.info("picture upload");
 
-            PrintWriter out = response.getWriter();
-            try {
-                // Apache Commons-Fileupload library classes
-                DiskFileItemFactory factory = new DiskFileItemFactory();
-                ServletFileUpload sfu = new ServletFileUpload(factory);
+        PrintWriter out = response.getWriter();
+        try {
+            // Apache Commons-Fileupload library classes
+            DiskFileItemFactory factory = new DiskFileItemFactory();
+            ServletFileUpload sfu = new ServletFileUpload(factory);
 
-                if (!ServletFileUpload.isMultipartContent(request)) {
-                    System.out.println("sorry. No file uploaded");
-                    return;
-                }
-
-                // parse request
-                List items = sfu.parseRequest(request);
-                FileItem id = (FileItem) items.get(0);
-                String userId = id.getString();
-
-                log.info("User id for photo: " + userId);
-
-                FileItem file = (FileItem) items.get(1);
-
-                IdmProcessor idmProc = IdmProcessorFactory.getIdmProcessor();
-                idmProc.uploadPicture(userId, file.get());
-                out.println("1");
-            } catch (Exception ex) {
-                log.info(ex);
-                out.println("Error --> " + ex.getMessage());
-            } finally {
-                out.close();
+            if (!ServletFileUpload.isMultipartContent(request)) {
+                System.out.println("sorry. No file uploaded");
+                return;
             }
+
+            // parse request
+            List items = sfu.parseRequest(request);
+            FileItem id = (FileItem) items.get(0);
+            String userId = id.getString();
+
+            log.info("User id for photo: " + userId);
+
+            FileItem file = (FileItem) items.get(1);
+
+            IdmProcessor idmProc = IdmProcessorFactory.getIdmProcessor();
+            idmProc.uploadPicture(userId, file.get());
+            out.println("1");
+        } catch (Exception ex) {
+            log.info(ex);
+        } finally {
+            out.close();
+            log.trace("end post");
+        }
 
     }
 }

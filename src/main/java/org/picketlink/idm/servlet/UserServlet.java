@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.picketlink.idm.common.exception.IdentityException;
 import org.picketlink.idm.servlet.bean.UserBean;
 import org.picketlink.idm.servlet.processor.IdmProcessor;
 
@@ -107,11 +108,17 @@ public class UserServlet extends IdmCrudServlet {
     protected void doIdmAdd(HttpServletRequest request, HttpServletResponse response, IdmProcessor idmProc) throws Exception {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        try {
+        try {            
             String userId = request.getParameter("uId");
             String fname = request.getParameter("uFn");
             String lname = request.getParameter("uLn");
             String email = request.getParameter("uEm");
+            String password = request.getParameter("uPw");
+            String passwordCheck = request.getParameter("uPw2");
+            
+            if (!password.equals(passwordCheck)){
+                throw new IdentityException("Passwords don't match!");
+            }
             
             log.trace("Add user: " + userId);
 
@@ -119,6 +126,7 @@ public class UserServlet extends IdmCrudServlet {
             idmProc.createAttribute(userId, "firstName", fname);
             idmProc.createAttribute(userId, "lastName", lname);
             idmProc.createAttribute(userId, "email", email);
+            idmProc.changeUserPassword(userId, password, passwordCheck);
             out.print("1");
         } catch (Exception e) {
             log.error(e);

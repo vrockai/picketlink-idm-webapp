@@ -55,10 +55,13 @@
                     var uLn = $("#idm-user-create-lname").val();
                     var uEm = $("#idm-user-create-email").val();
                     var uPw = $("#idm-user-create-pass").val();
-                    var args = "uId="+uId+"&uFn="+uFn+"&uLn="+uLn+"&uEm="+uEm+"&uPw="+uPw;
+                    var uPw2 = $("#idm-user-create-passconf").val();
+                    var args = "uId="+uId+"&uFn="+uFn+"&uLn="+uLn+"&uEm="+uEm+"&uPw="+uPw+"&uPw2="+uPw2;
                     var createUserUrl = urlUser+"?a=1&"+args;
-                    ajaxActionWithRefresh(createUserUrl, "User add succesfull.", "Unable to add user.", urlUser, paneUserAjax, handleUserPaginationClick);
-                    $(this).dialog( "close" );
+                    success = ajaxActionWithRefresh(createUserUrl, "User add succesfull.", "Unable to add user.", urlUser, paneUserAjax, handleUserPaginationClick);
+                    if (success) {
+                        $(this).dialog( "close" );
+                    }
                 },
                 Cancel: function() {
                     $(this).dialog( "close" );
@@ -121,11 +124,11 @@
         <label class="ui-widget" for="password">Password:
             <span class="small">Add your password</span>
         </label>
-        <input type="password" name="password" id="password" value="" id="idm-user-create-pass" class="ui-widget ui-state-default ui-corner-all idm" />
+        <input type="password" name="password" value="" id="idm-user-create-pass" class="ui-widget ui-state-default ui-corner-all idm" />
         <label class="ui-widget" for="password">Password confirmation:
             <span class="small">Confirm your password</span>
         </label>
-        <input type="password" name="password" id="password" value="" id="idm-user-create-passconf" class="ui-widget ui-state-default ui-corner-all idm" />
+        <input type="password" name="password" value="" id="idm-user-create-passconf" class="ui-widget ui-state-default ui-corner-all idm" />
     </form>
 </div>
 

@@ -85,23 +85,23 @@ ul.iconlist > li{
 }
 
 ul.group > li {
-    background: 0px -0px no-repeat url('../img/Personal2.png');
+    background: 15px 0px no-repeat url('../img/folder.png');
 }
 
 ul.group > li.idm-terminal-group {
-    background: 0px -0px no-repeat url('../img/MSN2.png');
+    background: 15px 0px no-repeat url('../img/users.png');
 }
 
 ul.roletype > li {
-    background: 0px -12px no-repeat url('../img/Downloads2.png');
+    background: 15px 0px no-repeat url('../img/tag.png');
 }
 
 ul.attribute > li {
-    background: 0px -12px no-repeat url('../img/3D-Design2.png');
+    background: 15px 0px no-repeat url('../img/paper-clip.png');
 }
 
 ul.role > li {
-    background: 0px -12px no-repeat url('../img/Settings2.png');
+    background: 15px 0px no-repeat url('../img/user.png');
 }
 
 ul.idm-ul-inline {
