@@ -78,8 +78,6 @@ public class IdmProcessor {
 
     private void init(String configFile) throws IdentityException, Exception {
         IdentityConfiguration identityConfiguration = new IdentityConfigurationImpl().configure(configFile);
-        Configuration cfg = new Configuration().setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLInnoDBDialect").setProperty("hibernate.connection.datasource", "java:comp/env/jdbc/test").setProperty("hibernate.order_updates", "true");
-        identityConfiguration.getIdentityConfigurationRegistry().register(cfg, "hibernateSessionFactory");
         identitySessionFactory = identityConfiguration.buildIdentitySessionFactory();
         identitySession = identitySessionFactory.createIdentitySession("idm_realm");        
     }
