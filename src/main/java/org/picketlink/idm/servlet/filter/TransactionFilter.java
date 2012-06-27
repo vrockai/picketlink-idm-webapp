@@ -35,11 +35,11 @@ public class TransactionFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        System.out.println("filter init");
+        log.trace("filter init");
     }
 
     @Override
     public void destroy() {
-        System.out.println("filter destroy");
+        log.trace("filter destroy");
     }
 }

@@ -67,7 +67,7 @@ public class ImageServlet extends IdmBasicServlet {
             ServletFileUpload sfu = new ServletFileUpload(factory);
 
             if (!ServletFileUpload.isMultipartContent(request)) {
-                System.out.println("sorry. No file uploaded");
+                log.info("sorry. No file uploaded");
                 return;
             }
 
