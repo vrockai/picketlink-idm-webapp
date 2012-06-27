@@ -22,7 +22,12 @@ Build and deploy with maven (3.x). Minimal required Java version is 1.6. Using t
 
 $ mvn clean install -Pdeploy -Dportal.deploy.dir=$GATEIN_DEPLOY_DIR
 
+It is possible to install the application to EPP5. The instalation consist of two steps: Replacing the pickelink-idm libraries with the current version (or the version defined in pom.xml of this project) in the ".../deploy/gatein.ear/lib/" directory. Building the application with the EPP5 profile:
+
+$ mvn clean install -P EPP5 -Pdeploy -Dportal.deploy.dir=$GATEIN_DEPLOY_DIR
+
 Usage
 =====
 
 Application is accesible on http://localhost:8080/jboss-idm-servlet/idm after deployment.
+
