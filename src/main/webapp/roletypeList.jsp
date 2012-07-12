@@ -29,7 +29,7 @@
         $("button.idm-rt-roles").button({ icons: { primary: "ui-icon-tag" }}).click(function() {
             var rt = $(this).val();
             var url = urlRole+"?rt="+rt;
-            loadByAjax(paneRoletypeAjax, url);
+            loadByAjax(paneRoleAjax, url);
             $(paneTabs).tabs('select', 2);
         });
         

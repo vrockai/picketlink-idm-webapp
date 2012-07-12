@@ -23,11 +23,9 @@ package org.picketlink.idm.servlet;
 
 import java.io.PrintWriter;
 import java.util.Collection;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.log4j.Logger;
 import org.picketlink.idm.common.exception.IdentityException;
 import org.picketlink.idm.servlet.bean.UserBean;

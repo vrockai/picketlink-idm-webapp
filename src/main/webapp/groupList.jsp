@@ -42,16 +42,17 @@
             var type = $(this).siblings('input[name="gType"]').val();
             
             function handleGroupRolePaginationClick(new_page_id, pagination_container) {
-                var handlerUrl = urlRole+"?g="+name+"&t="+type+"&uO="+new_page_id;            
-                var ajaxPane = paneRoleAjax;
-                roleOffset = new_page_id;
-                $.cookie(offsetCookieRole, roleOffset);
-                loadByAjax(ajaxPane, handlerUrl);            
-                return false;
+                //var handlerUrl = urlRole+"?g="+name+"&t="+type+"&uO="+new_page_id;            
+                var handlerUrl = urlRole+"?g="+name+"&t="+type;
+                //var ajaxPane = paneRoleAjax;
+                //roleOffset = new_page_id;
+                //$.cookie(offsetCookieRole, roleOffset);
+                //loadByAjax(ajaxPane, handlerUrl);            
+                return abstractPaginationHandler(new_page_id, pagination_container, handlerUrl, offsetCookieRole, paneRoleAjax);
             }
             
             var url = urlRole+"?g="+name+"&t="+type;
-            loadByAjax(paneRoleAjax, url);
+            //loadByAjax(paneRoleAjax, url);
             createPaginator(url, paneRoleAjax, handleGroupRolePaginationClick);
             $(paneTabs).tabs('select', 2);
         });
@@ -149,6 +150,47 @@
 
             <c:choose>
                 <c:when test="${group.parent}">
+                    <script>
+                        $(document).ready(function() {
+                            $("#grp${group.hash}").dialog({
+                                autoOpen: false,
+                                width: 600,
+                                dialogClass: "dialogWithDropShadow",                        
+                                title: "${group.name} children"
+                            });
+                        });
+                    </script>
+                    <div id="grp${group.hash}" class="dialog-children">                
+                        <ul class="group iconlist">                        
+                            <c:forEach var="child" items="${group.children}">                        
+                                <li class="<c:choose><c:when test="${child.parent}">idm-parent-group</c:when><c:otherwise>idm-terminal-group</c:otherwise></c:choose>">
+                                    <input type="hidden" name="pName" value="${group.name}"/>
+                                    <input type="hidden" name="pType" value="${group.type}"/>
+                                    <input type="hidden" name="gName" value="${child.name}"/>
+                                    <input type="hidden" name="gType" value="${child.type}"/>
+                                    <c:choose>
+                                        <c:when test="${child.parent}">
+                                            <a href="#/" class="idm-lnk idm-name-margin idm-group">
+                                                <span class="idm-name idm-group-name">${child.name}</span>
+                                            </a>
+                                            <div class="idm-col">
+                                                <span class="idm-type"><span class="idm-group-type">${child.type}</span></span>
+                                                <span class="idm-group-children">(children: ${child.childrenCount})</span>
+                                            </div>                                 
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="idm-name idm-name-margin">${child.name}</span>
+                                            <div class="idm-col">
+                                                <span class="idm-type">${child.type}</span>
+                                                <span class="idm-group-children">(children: ${child.childrenCount})</span>
+                                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <button class="idm-grp-deassign">Deassign...</button>
+                                </li>
+                            </c:forEach>                  
+                        </ul>                
+                    </div>
                     <button value="${group.hash}" class="idm-children-open">Show children...</button>
                 </c:when>
             </c:choose>
@@ -157,49 +199,6 @@
             <button value="assign" class="idm-assign">Assign into...</button>
             <button value="delete" class="idm-group-delete">Delete...</button>
             <button class="idm-role-group-add" value="${group.name}">Add to membership</button>
-
-            <script>
-                $(document).ready(function() {
-                    $("#grp${group.hash}").dialog({
-                        autoOpen: false,
-                        width: 600,
-                        dialogClass: "dialogWithDropShadow",                        
-                        title: "${group.name} children"
-                    });
-                });
-            </script>
-
-            <div id="grp${group.hash}" class="dialog-children">                
-                <ul class="group iconlist">                        
-                    <c:forEach var="child" items="${group.children}">                        
-                        <li>
-                            <input type="hidden" name="pName" value="${group.name}"/>
-                            <input type="hidden" name="pType" value="${group.type}"/>
-                            <input type="hidden" name="gName" value="${child.name}"/>
-                            <input type="hidden" name="gType" value="${child.type}"/>
-                            <c:choose>
-                                <c:when test="${child.parent}">
-                                    <a href="#/" class="idm-lnk idm-name-margin idm-group">
-                                        <span class="idm-name idm-group-name">${child.name}</span>
-                                    </a>
-                                    <div class="idm-col">
-                                        <span class="idm-type"><span class="idm-group-type">${child.type}</span></span>
-                                        <span class="idm-group-children">(children: ${child.childrenCount})</span>
-                                    </div>                                 
-                                </c:when>
-                                <c:otherwise>
-                                    <span class="idm-name idm-name-margin">${child.name}</span>
-                                    <div class="idm-col">
-                                        <span class="idm-type">${child.type}</span>
-                                        <span class="idm-group-children">(children: ${child.childrenCount})</span>
-                                    </div>
-                                </c:otherwise>
-                            </c:choose>
-                            <button class="idm-grp-deassign">Deassign...</button>
-                        </li>
-                    </c:forEach>                  
-                </ul>                
-            </div>
 
         </li>
     </c:forEach>

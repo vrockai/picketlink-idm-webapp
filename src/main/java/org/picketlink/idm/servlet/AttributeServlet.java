@@ -133,7 +133,7 @@ public class AttributeServlet extends IdmCrudServlet {
         try {
             int attNumber = 0;
             attNumber = idmProc.getAttributeCount(userId);
-            log.trace("Att count found: "+attNumber);
+            log.info("Att count found: "+attNumber);
             out.print(attNumber);
         } catch (Exception e) {
             log.error(e);

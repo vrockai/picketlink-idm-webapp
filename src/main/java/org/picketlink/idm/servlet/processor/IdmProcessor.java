@@ -82,7 +82,7 @@ public class IdmProcessor {
         identitySession = identitySessionFactory.createIdentitySession("idm_realm");        
     }
 
-    public void uploadPicture(String username, byte[] picture) throws IdentityException {
+    public void uploadPicture(String username, byte[] picture) throws IdentityException {        
         AttributesManager attManager = identitySession.getAttributesManager();
 
         User user = identitySession.getPersistenceManager().findUser(username);
@@ -91,7 +91,7 @@ public class IdmProcessor {
             new SimpleAttribute("picture", new byte[][]{picture}),};
 
         attManager.getAttributeDescription(user, username);
-        attManager.addAttributes(user, userPhoto);
+        attManager.addAttributes(user, userPhoto);        
     }
 
     @Deprecated
@@ -331,7 +331,7 @@ public class IdmProcessor {
             ub.setEmail(email != null && email.getValue() != null ? email.getValue().toString() : "");
             Attribute image = getAttribute("picture", u);
             if (image != null && image.getValue() != null) {
-                log.info("picture:" + image.getValue());
+                log.trace("picture:" + image.getValue());
             }
 
             ub.setImage(image != null && image.getValue() != null ? image.getValue().toString() : "");
@@ -434,7 +434,7 @@ public class IdmProcessor {
                 }
                 gb.setRoleList(rc);
 
-                gb.setChildren(getSubGroupCol(g));
+                gb.setChildren(getSubGroupCol(g));                                
                 Collection<Group> plist = identitySession.getRelationshipManager().findAssociatedGroups(g, gType, true, true);
                 gb.setParentList(plist);
 
@@ -508,10 +508,10 @@ public class IdmProcessor {
         Attribute lname = getAttribute("lastName", u);
         ub.setLname(lname != null && lname.getValue() != null ? lname.getValue().toString() : "");
         Attribute email = getAttribute("email", u);
-        ub.setEmail(email != null && email.getValue() != null ? email.getValue().toString() : "");
+        ub.setEmail(email != null && email.getValue() != null ? email.getValue().toString() : "");        
         Attribute image = getAttribute("picture", u);
 
-
+        
         ub.setImage(image != null && image.getValue() != null ? image.getValue().toString() : "");
         ub.setPhoto(image != null && image.getValue() != null ? (byte[]) image.getValue() : new byte[]{0});
 

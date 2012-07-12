@@ -25,6 +25,8 @@
             var url = urlGroup+"?p="+name+"&t="+type;         
             $.get(urlGroup+"?a=6&p="+name+"&t="+type, function(data) {
                 $(paneGroupBreadcrums).html(data);
+                $.cookie(groupParentId,name);
+                $.cookie(groupTypeId,type);
             });
             
             $.get("/jboss-idm-servlet/group?a=5&p="+name+"&t="+type, function(data) {
@@ -41,6 +43,9 @@
         });
         
         $("a.idm-root-group").click(function(){  
+            
+            $.cookie(groupParentId,"");
+            $.cookie(groupTypeId,"root_type");
             
             $.get(urlGroup+"?a=6", function(data) {
                 $(paneGroupBreadcrums).html(data);

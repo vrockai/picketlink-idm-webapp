@@ -19,11 +19,12 @@
     $(function() {
         var uname = "${userAttBean.userId}";
         
-        function handleAttPaginationClick(new_page_id, pagination_container) {
-            var url = urlAtt+"?u="+uname+"&uO="+new_page_id;            
-            attOffset = new_page_id;
-            $.cookie(offsetCookieAtt, attOffset);
-            loadByAjax(paneAttAjax, url);
+        function handleAttPaginationClick(new_page_id, pagination_container) {            
+            var attUrl = urlAtt+"?u="+uname;//+"&uO="+new_page_id;            
+            //attOffset = new_page_id;
+            //$.cookie(offsetCookieAtt, attOffset);
+            //loadByAjax(paneAttAjax, url);
+            return abstractPaginationHandler(new_page_id, pagination_container, attUrl, offsetCookieAtt, paneAttAjax);
             return false;
         }  
         
@@ -69,8 +70,8 @@
                         if (data == "1"){
                             showMessage("note-success", "Attribute delete succesfull.");
                             
-                            createPaginator(urlAtt, paneAttAjax, handleAttPaginationClick);
-                            loadByAjax(paneAttAjax, urlAtt+"?uO="+attOffset);                            
+                            createPaginator(urlAtt+"?u="+uname, paneAttAjax, handleAttPaginationClick);                            
+                            //loadByAjax(paneAttAjax, urlAtt+"&u="+uname+"?uO="+attOffset);                            
                         } else {
                             showMessage("note-error", "Unable to delete attribute.<br/>Error message: "+data);    
                         }

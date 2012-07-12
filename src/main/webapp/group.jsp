@@ -97,7 +97,7 @@
         </label><input type="text" name="gId" id="idm-grp-create-id" class="ui-widget ui-state-default ui-corner-all idm"/>
         <label class="ui-widget">Group type:
             <span class="small">Add the group type</span>
-        </label><input type="text" value="GROUP" name="gType" id="idm-grp-create-type" class="ui-widget ui-state-default ui-corner-all idm"/>          
+        </label><input type="text" value="root_type" name="gType" id="idm-grp-create-type" class="ui-widget ui-state-default ui-corner-all idm"/>          
     </form>
 </div>
 

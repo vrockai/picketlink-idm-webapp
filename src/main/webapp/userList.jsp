@@ -166,7 +166,7 @@
                 var userId = $("#idm-user-att").html();
                 args = "u="+userId+"&aN="+aname+"&aV="+avalue;
                 var attAddUrl = urlAtt+"?a=1&"+args;
-                ajaxActionWithRefresh(attAddUrl, "Attribute add succesfull.", "Unable to add attribute.", urlUser, paneAttAjax, handleAttPaginationClick);
+                ajaxActionWithRefresh(attAddUrl, "Attribute add succesfull.", "Unable to add attribute.", urlAtt+"?u="+userId, paneAttAjax, handleAttPaginationClick);
             });
         });
 
@@ -207,15 +207,17 @@
                 type: 'POST',
                 beforeSend: function(){;},
                 success: function(){
-                    showMessage("note-success", "User photo was uploaded.");
+                    var newPhotoUrl = urlPhoto+"?u="+userId;
+                    showMessage("note-success", "User photo was uploaded."+newPhotoUrl);
+                    d = new Date();
+                    $("#imgList"+userHash).attr("src",newPhotoUrl+"&d="+d);
+                    $("#imgEdit"+userHash).attr("src",newPhotoUrl+"&d="+d);
                 },
                 complete: function(){
-                    var newPhotoUrl = urlPhoto+"?u="+userId;
-                    $("#imgList"+userHash).attr("src",newPhotoUrl);
-                    $("#imgEdit"+userHash).attr("src",newPhotoUrl);
+                    
                 },
                 error: function(){
-                    showMessage("note-error", "Unable to upload user photo.");
+                    showMessage("note-error", "Unable to upload user photo.");                    
                 },
                 // Form data
                 data: formData,
@@ -267,7 +269,7 @@
     <c:forEach var="user" items="${userPagiList}">
         <li class="user">
 
-            <a class="idm-lightbox-lnk idm-user-photo" href="${pageContext.request.contextPath}/photo?u=${user.userId}"><img src='${pageContext.request.contextPath}/photo?u=${user.userId}' id="imgList${user.hash}" width="90" class='idm-user-photo'/></a>
+            <a class="idm-lightbox-lnk idm-user-photo" href="${pageContext.request.contextPath}/photo?u=${user.userId}&x=<%= System.nanoTime() %>"><img src='${pageContext.request.contextPath}/photo?u=${user.userId}&x=<%= System.nanoTime() %>' id="imgList${user.hash}" width="90" class='idm-user-photo'/></a>
 
             <div class="idm-name idm-name-margin">${user.userId}</div>
 

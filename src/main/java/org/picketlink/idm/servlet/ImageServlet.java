@@ -35,6 +35,7 @@ public class ImageServlet extends IdmBasicServlet {
             String userId = getStringParameter(request, "u", "");
 
             UserBean ub = idmProc.getUser(userId);
+            
             if (ub.isPhoto()) {
                 response.reset();
                 response.setContentType("Image");
@@ -58,7 +59,7 @@ public class ImageServlet extends IdmBasicServlet {
         log.trace("do post");
         response.setContentType("text/html;charset=UTF-8");
 
-        log.info("picture upload");
+        log.trace("picture upload");
 
         PrintWriter out = response.getWriter();
         try {

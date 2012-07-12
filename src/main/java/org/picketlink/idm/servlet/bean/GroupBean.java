@@ -40,6 +40,7 @@ public class GroupBean implements Serializable {
     private Collection<GroupBean> children;
     private Collection<Group> parentList;
     private String type = "^notset^";
+    private long nanotime = System.nanoTime();
 
     public String getType() {
         return type;
@@ -96,8 +97,9 @@ public class GroupBean implements Serializable {
         this.type = group.getGroupType();
     }
 
+    // TODO - hach, instead of nano time, make subgroup loading ajaxified
     public String getHash() {
-        return name.replace(" ", "_");
+        return name.replace(" ", "_")+nanotime;
     }
 
     public boolean isParent() {

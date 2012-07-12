@@ -103,7 +103,7 @@
     <label for="userId">E-mail:
         <span class="small msg">Add user e-mail</span>
     </label><input type="text" name="userId" value="foo@redhat.com" id="emailInp" class="ui-widget ui-state-default ui-corner-all idm" />
-    <div class="error">tu bude validation error</div>
+    <div class="error">non-valid e-mail address</div>
     <button class="idm-user-add" type="button">Add new user...</button>
 </form>
 

@@ -70,7 +70,7 @@ public class GroupServlet extends IdmCrudServlet {
     }
     
     private void doAsscociateGroup(HttpServletRequest request, HttpServletResponse response, IdmProcessor idmProc) throws IOException{
-    	log.info("doing ass");
+    	log.trace("doing ass");
     	String pId = getStringParameter(request, "pId", "");
         String pT = getStringParameter(request, "pT", "");
         String gId = getStringParameter(request, "gId", "");
@@ -90,7 +90,7 @@ public class GroupServlet extends IdmCrudServlet {
     }
     
     private void doDisasscociateGroup(HttpServletRequest request, HttpServletResponse response, IdmProcessor idmProc) throws IOException {
-    	log.info("doing deass");
+    	log.trace("doing deass");
     	String pId = getStringParameter(request, "pId", "");
         String pT = getStringParameter(request, "pT", "");
         String gId = getStringParameter(request, "gId", "");
@@ -112,7 +112,7 @@ public class GroupServlet extends IdmCrudServlet {
     }
     
     private void doBreadCrumbs(HttpServletRequest request, HttpServletResponse response, IdmProcessor idmProc) throws IOException, ServletException{
-    	log.info("doing bread");
+    	log.trace("doing bread");
     	String gType = getStringParameter(request, "t", "");
         String gParent = getStringParameter(request, "p", "");
 
